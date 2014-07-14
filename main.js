@@ -2,5 +2,5 @@ $(document).ready(function(){
     $(".cct").cct({
         str: "default"
     });
-    $(".cct").cct('getValue');
+    console.log($(".cct").cct('value'));
 });
