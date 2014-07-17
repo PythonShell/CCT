@@ -9,10 +9,11 @@
             width: 1600,
             cellWidth: 1,
             height: 20,
+            padding: 2,
         },
 
         _create: function() {
-            this._caculateWidth();
+            this._setSize();
             this.element.append("<canvas class='cct-cube' width='"+this.options.height+"' height='"+this.options.height+"'></div>");
             this.element.append("<canvas class='cct-selector' style='display: none;' width='"+this.options.width+"' height='"+this.options.height+"'></canvas>");
             this._drawSelector();
@@ -34,13 +35,14 @@
             this._update();
         },
 
-        _caculateWidth: function() {
+        _setSize: function() {
+            this.options.padding = this.options.height*0.1;
             var width = (this.options.max-this.options.min)
                 / (100 * this.options.step);
             var cellWidth = Math.ceil(200 / width);
             this.options.num = width;
             this.options.cellWidth = cellWidth;
-            this.options.width = (width-1)*cellWidth;
+            this.options.width = width*cellWidth + this.options.padding*2;
         },
 
         _drawCube: function() {
@@ -57,8 +59,8 @@
                 fillStyle: this._getColor(this.options.value),
                 x: this.options.height /2,
                 y: this.options.height /2,
-                width: this.options.height*0.8,
-                height: this.options.height*0.8,
+                width: this.options.height-this.options.padding*2,
+                height: this.options.height-this.options.padding*2,
             });
         },
 
@@ -77,7 +79,7 @@
             this.element.children(".cct-selector").drawRect({
                 layer: true,
                 fillStyle: "#000",
-                x: this.options.width / 2 + 1,
+                x: this.options.width / 2,
                 y: this.options.height /2,
                 width: this.options.width,
                 height: this.options.height,
@@ -86,10 +88,10 @@
                 this.element.children(".cct-selector").drawRect({
                     layer: true,
                     fillStyle: this._getColor(this.options.min+i*this.options.step*100),
-                    x: i*this.options.cellWidth,
+                    x: this.options.padding+this.options.cellWidth/2+i*this.options.cellWidth,
                     y: this.options.height/2,
                     width: this.options.cellWidth,
-                    height: this.options.height,
+                    height: this.options.height - 2*this.options.padding,
                 });
             }
         },
