@@ -3,7 +3,7 @@
         options: {
             min: 2700,
             max: 6500,
-            deg: 2,
+            deg: 10,
             value: 2700,
             step: 1,     // 1 for 100
             width: 1600,
@@ -13,7 +13,7 @@
 
         _create: function() {
             this._caculateWidth();
-            this.element.append("<div class='cct-cube'></div>");
+            this.element.append("<canvas class='cct-cube' width='"+this.options.height+"' height='"+this.options.height+"'></div>");
             this.element.append("<canvas class='cct-selector' style='display: none;' width='"+this.options.width+"' height='"+this.options.height+"'></canvas>");
             this._drawSelector();
             this._drawCube();
@@ -37,17 +37,28 @@
         _caculateWidth: function() {
             var width = (this.options.max-this.options.min)
                 / (100 * this.options.step);
-            var cellWidth = Math.ceil(500 / width);
+            var cellWidth = Math.ceil(200 / width);
             this.options.num = width;
             this.options.cellWidth = cellWidth;
             this.options.width = (width-1)*cellWidth;
         },
 
         _drawCube: function() {
-            this.element.children(".cct-cube").css({
-                "width": this.options.height,
-                "height": this.options.height,
-                "background-color": this._getColor(this.options.value),
+            this.element.children(".cct-cube").drawRect({
+                layer: false,
+                fillStyle: "#000",
+                x: this.options.height /2,
+                y: this.options.height /2,
+                width: this.options.height,
+                height: this.options.height,
+            });
+            this.element.children(".cct-cube").drawRect({
+                layer: false,
+                fillStyle: this._getColor(this.options.value),
+                x: this.options.height /2,
+                y: this.options.height /2,
+                width: this.options.height*0.8,
+                height: this.options.height*0.8,
             });
         },
 
@@ -60,6 +71,9 @@
         },
 
         _drawSelector: function() {
+            this.element.children(".cct-selector").css({
+                "margin-left": this.options.height*0.3,
+            });
             this.element.children(".cct-selector").drawRect({
                 layer: true,
                 fillStyle: "#000",
